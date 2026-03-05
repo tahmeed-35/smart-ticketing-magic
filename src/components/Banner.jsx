@@ -1,14 +1,15 @@
 import React from 'react';
+import vector1 from '../assets/vector1.png';
 
 export default function Banner({ inProgressCount = 0, resolvedCount = 0 }) {
     return (
         <div className="w-full mb-10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-[#7B5AF2] to-[#9B64FA] p-10 text-center text-white shadow-sm flex flex-col items-center justify-center min-h-[240px]">
+                <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-indigo-600 via-purple-600 to-fuchsia-500 p-10 text-center text-white shadow-lg flex flex-col items-center justify-center min-h-[240px]">
                     <div
-                        className="absolute inset-0 opacity-20"
+                        className="absolute inset-0 opacity-60 mix-blend-overlay"
                         style={{
-                            backgroundImage: `url('/src/assets/vector1.png')`,
+                            backgroundImage: `url(${vector1})`,
                             backgroundSize: '100% 100%',
                             backgroundPosition: 'center',
                             backgroundRepeat: 'no-repeat'
@@ -24,11 +25,11 @@ export default function Banner({ inProgressCount = 0, resolvedCount = 0 }) {
                     </span>
                 </div>
 
-                <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-[#51C772] to-[#128F60] p-10 text-center text-white shadow-sm flex flex-col items-center justify-center min-h-[240px]">
+                <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-emerald-500 via-green-600 to-teal-700 p-10 text-center text-white shadow-lg flex flex-col items-center justify-center min-h-[240px]">
                     <div
-                        className="absolute inset-0 opacity-20"
+                        className="absolute inset-0 opacity-60 mix-blend-overlay"
                         style={{
-                            backgroundImage: `url('/src/assets/vector1.png')`,
+                            backgroundImage: `url(${vector1})`,
                             backgroundSize: '100% 100%',
                             backgroundPosition: 'center',
                             backgroundRepeat: 'no-repeat'
