@@ -8,6 +8,7 @@ import Footer from '../components/Footer';
 export default function Home() {
     const [tickets, setTickets] = useState([]);
     const [selectedTasks, setSelectedTasks] = useState([]);
+    const [resolvedTasks, setResolvedTasks] = useState([]);
 
     useEffect(() => {
         // Fetch customer tickets from the public folder's api.json
@@ -25,13 +26,39 @@ export default function Home() {
     }, []);
 
     const handleTicketClick = (ticket) => {
-        // Simple alert notifying the user of the action
-        alert(`Added "${ticket.title}" to your Task Status panel!`);
-
-        // Basic logic to prevent duplicate additions
-        if (!selectedTasks.some((task) => task.id === ticket.id)) {
-            setSelectedTasks((prevTasks) => [...prevTasks, ticket]);
+        // Prevent adding if it's already completed
+        if (resolvedTasks.some((t) => t.id === ticket.id)) {
+            alert(`Ticket "${ticket.title}" is already resolved!`);
+            return;
         }
+
+        // Basic logic to prevent duplicate additions to 'In Progress' state
+        if (!selectedTasks.some((task) => task.id === ticket.id)) {
+            alert(`Added "${ticket.title}" to your Task Status panel!`);
+            setSelectedTasks((prevTasks) => [...prevTasks, ticket]);
+        } else {
+            alert(`Ticket "${ticket.title}" is already in progress.`);
+        }
+    };
+
+    const handleCompleteTask = (taskToComplete) => {
+        // Show alert (temporary)
+        alert(`Successfully marked "${taskToComplete.title}" as resolved!`);
+
+        // Remove the ticket from Task Status
+        setSelectedTasks((prevTasks) =>
+            prevTasks.filter((task) => task.id !== taskToComplete.id)
+        );
+
+        // Add it to Resolved List
+        setResolvedTasks((prevResolvedTasks) =>
+            [...prevResolvedTasks, taskToComplete]
+        );
+
+        // Remove it from Customer Tickets list
+        setTickets((prevTickets) =>
+            prevTickets.filter((ticket) => ticket.id !== taskToComplete.id)
+        );
     };
 
     return (
@@ -43,13 +70,16 @@ export default function Home() {
 
             <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
-                {/* Banner automatically updates length of In-Progress tasks */}
-                <Banner inProgressCount={selectedTasks.length} resolvedCount={0} />
+                {/* Banner accurately reflects dynamic logic state automatically */}
+                <Banner
+                    inProgressCount={selectedTasks.length}
+                    resolvedCount={resolvedTasks.length}
+                />
 
                 {/* Responsive dual-column layout */}
                 <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
 
-                    {/* Main List Section (Takes up 2/3 of space on large screens) */}
+                    {/* Main List Section */}
                     <div className="lg:col-span-2 space-y-5">
                         <h2 className="text-[20px] font-bold text-[#3B4358] tracking-tight">Customer Tickets</h2>
 
@@ -63,16 +93,20 @@ export default function Home() {
                                     />
                                 ))
                             ) : (
-                                <div className="col-span-full py-16 text-center text-gray-400 font-medium bg-white rounded-lg border border-gray-200">
-                                    Loading tickets...
+                                <div className="col-span-full py-16 text-center text-gray-400 font-medium bg-white rounded-lg border border-gray-200 shadow-sm">
+                                    {resolvedTasks.length > 0 ? "All tickets have been resolved! Great job." : "Loading tickets..."}
                                 </div>
                             )}
                         </div>
                     </div>
 
-                    {/* Sticky Sidebar Status section (Takes 1/3 space) */}
+                    {/* Sticky Sidebar Status section */}
                     <div className="lg:col-span-1 sticky top-6">
-                        <TaskStatus tasks={selectedTasks} />
+                        <TaskStatus
+                            tasks={selectedTasks}
+                            resolvedTasks={resolvedTasks}
+                            onComplete={handleCompleteTask}
+                        />
                     </div>
 
                 </div>

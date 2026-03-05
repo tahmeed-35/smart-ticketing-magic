@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function TaskStatus({ tasks = [] }) {
+export default function TaskStatus({ tasks = [], resolvedTasks = [], onComplete }) {
     return (
         <div className="w-full">
             {/* Active Tasks Section */}
@@ -15,10 +15,10 @@ export default function TaskStatus({ tasks = [] }) {
                                 {task.title}
                             </h3>
                             <button
-                                className="w-full bg-[#0CAF60] hover:bg-[#0A9652] text-white py-2 rounded-md font-medium text-[13px] transition-colors"
+                                className="w-full bg-[#0CAF60] hover:bg-[#0A9652] text-white py-2 rounded-md font-medium text-[13px] transition-colors shadow-sm"
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    alert(`Completing task: ${task.title}`);
+                                    onComplete(task);
                                 }}
                             >
                                 Complete
@@ -31,7 +31,22 @@ export default function TaskStatus({ tasks = [] }) {
             {/* Resolved Tasks Section */}
             <div>
                 <h2 className="text-[18px] font-bold text-[#3B4358] mb-3">Resolved Task</h2>
-                <p className="text-[#8492A6] text-[13px]">No resolved tasks yet.</p>
+                {resolvedTasks.length > 0 ? (
+                    <div className="space-y-3">
+                        {resolvedTasks.map((task) => (
+                            <div
+                                key={task.id}
+                                className="bg-[#EDF2FE] rounded-md p-4 flex items-center shadow-sm border border-[#E0E7FF]"
+                            >
+                                <span className="text-[#1E293B] text-[13px] font-medium leading-tight">
+                                    {task.title}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <p className="text-[#8492A6] text-[13px]">No resolved tasks yet.</p>
+                )}
             </div>
         </div>
     );
