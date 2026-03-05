@@ -1,31 +1,37 @@
-export default function TaskStatus() {
+import React from 'react';
+
+export default function TaskStatus({ tasks = [] }) {
     return (
-        <div className="stats shadow-sm w-full border border-base-200/50 bg-base-100 mb-8 rounded-2xl overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.1)]">
-            <div className="stat place-items-center py-6">
-                <div className="stat-figure text-primary/20">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-8 h-8 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <div className="w-full">
+            {/* Active Tasks Section */}
+            <div className="mb-8">
+                <h2 className="text-[18px] font-bold text-[#3B4358] mb-1">Task Status</h2>
+                <p className="text-[#8492A6] text-[13px] mb-4">Select a ticket to add to Task Status</p>
+
+                <div className="space-y-3">
+                    {tasks.map((task) => (
+                        <div key={task.id} className="bg-white rounded-md p-4 shadow-sm border border-gray-100 hover:shadow transition-shadow">
+                            <h3 className="font-semibold text-gray-800 text-[14px] mb-3 leading-tight">
+                                {task.title}
+                            </h3>
+                            <button
+                                className="w-full bg-[#0CAF60] hover:bg-[#0A9652] text-white py-2 rounded-md font-medium text-[13px] transition-colors"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    alert(`Completing task: ${task.title}`);
+                                }}
+                            >
+                                Complete
+                            </button>
+                        </div>
+                    ))}
                 </div>
-                <div className="stat-title text-base-content/70 font-medium">Total Tickets</div>
-                <div className="stat-value text-4xl text-base-content font-bold tracking-tight">3</div>
-                <div className="stat-desc text-primary font-medium mt-1">From all time</div>
             </div>
 
-            <div className="stat place-items-center py-6 border-l border-base-200/50">
-                <div className="stat-figure text-success/20">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-8 h-8 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                </div>
-                <div className="stat-title text-base-content/70 font-medium">Resolved</div>
-                <div className="stat-value text-4xl text-success font-bold tracking-tight">1</div>
-                <div className="stat-desc text-success/80 font-medium mt-1">Tasks completed</div>
-            </div>
-
-            <div className="stat place-items-center py-6 border-l border-base-200/50">
-                <div className="stat-figure text-warning/20">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-8 h-8 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                </div>
-                <div className="stat-title text-base-content/70 font-medium">Pending & Open</div>
-                <div className="stat-value text-4xl text-warning font-bold tracking-tight">2</div>
-                <div className="stat-desc text-warning/80 font-medium mt-1">Requires attention</div>
+            {/* Resolved Tasks Section */}
+            <div>
+                <h2 className="text-[18px] font-bold text-[#3B4358] mb-3">Resolved Task</h2>
+                <p className="text-[#8492A6] text-[13px]">No resolved tasks yet.</p>
             </div>
         </div>
     );

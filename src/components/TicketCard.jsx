@@ -1,68 +1,100 @@
-export default function TicketCard({ ticket }) {
-    // Safe UI fallback defaults
-    const {
-        title = 'Untitled Ticket',
-        status = 'Open',
-        priority = 'Normal',
-        createdAt = new Date().toISOString()
-    } = ticket || {};
+import React from 'react';
 
-    const getStatusColor = (currentStatus) => {
-        switch (currentStatus.toLowerCase()) {
-            case 'resolved': return 'badge-success text-success-content';
-            case 'pending': return 'badge-warning text-warning-content';
-            case 'open': return 'badge-info text-info-content';
-            default: return 'badge-ghost';
-        }
-    };
+export default function TicketCard({ ticket, onClick }) {
+    const { id, title, description, customer, priority, status, createdAt } = ticket;
 
-    const getPriorityIcon = (currentPriority) => {
-        switch (currentPriority.toLowerCase()) {
-            case 'high':
-                return <span className="text-error" title="High Priority">↑</span>;
-            case 'low':
-                return <span className="text-success" title="Low Priority">↓</span>;
+    // Visual styles for the status badge
+    const getStatusStyle = (currentStatus) => {
+        switch (currentStatus?.toLowerCase()) {
+            case 'open':
+                return 'bg-green-100 text-green-700';
+            case 'in progress':
+            case 'in-progress':
+                return 'bg-yellow-100 text-[#B45309]'; // Darker yellow/orange for readability
+            case 'resolved':
+                return 'bg-blue-100 text-blue-700';
             default:
-                return <span className="text-base-content/50" title="Medium Priority">-</span>;
+                return 'bg-gray-100 text-gray-700';
         }
     };
+
+    // Color dot for the status badge
+    const getStatusDot = (currentStatus) => {
+        switch (currentStatus?.toLowerCase()) {
+            case 'open':
+                return 'bg-green-500';
+            case 'in progress':
+            case 'in-progress':
+                return 'bg-yellow-400';
+            case 'resolved':
+                return 'bg-blue-500';
+            default:
+                return 'bg-gray-500';
+        }
+    };
+
+    // Text color coloring for the priority string
+    const getPriorityColor = (currentPriority) => {
+        switch (currentPriority?.toLowerCase()) {
+            case 'high':
+                return 'text-red-500';
+            case 'medium':
+                return 'text-yellow-500';
+            case 'low':
+                return 'text-green-500';
+            default:
+                return 'text-gray-500';
+        }
+    };
+
+    // Formatting date from ISO to MM/DD/YYYY format
+    const formattedDate = new Date(createdAt).toLocaleDateString('en-US', {
+        month: 'numeric',
+        day: 'numeric',
+        year: 'numeric'
+    });
 
     return (
-        <div className="card bg-base-100 hover:shadow-md transition-shadow border border-base-200/60 rounded-xl group relative overflow-hidden">
-            {/* Tiny left accent color bar */}
-            <div className={`absolute left-0 top-0 bottom-0 w-1 ${status.toLowerCase() === 'resolved' ? 'bg-success' :
-                    status.toLowerCase() === 'pending' ? 'bg-warning' : 'bg-info'
-                }`}></div>
+        <div
+            onClick={() => onClick(ticket)}
+            className="bg-white rounded-lg p-5 shadow-sm border border-gray-100 hover:shadow-md transition-shadow cursor-pointer w-full flex flex-col h-full group"
+        >
+            {/* Header Line */}
+            <div className="flex justify-between items-start mb-3 gap-3">
+                <h3 className="font-semibold text-gray-800 text-[15px] leading-snug group-hover:text-[#5542F6] transition-colors">{title}</h3>
+                <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-medium whitespace-nowrap ${getStatusStyle(status)}`}>
+                    <span className={`w-2 h-2 rounded-full ${getStatusDot(status)}`}></span>
+                    {status === 'In Progress' ? 'In- Progress' : status}
+                </div>
+            </div>
 
-            <div className="card-body p-5">
-                <div className="flex justify-between items-start gap-4 mb-2">
-                    <p className="font-semibold text-lg leading-tight line-clamp-2 text-base-content group-hover:text-primary transition-colors cursor-pointer">
-                        {title}
-                    </p>
-                    <div className="flex items-center gap-2 flex-shrink-0">
-                        {getPriorityIcon(priority)}
-                        <span className={`badge border-none font-medium text-xs px-2.5 py-1 ${getStatusColor(status)}`}>
-                            {status}
-                        </span>
-                    </div>
+            {/* Body Description */}
+            <p className="text-gray-500 text-[13px] leading-relaxed mb-6 line-clamp-2 flex-grow">
+                {description}
+            </p>
+
+            {/* Footer Meta Data */}
+            <div className="flex flex-col sm:flex-row justify-between sm:items-center text-xs text-gray-500 gap-4 sm:gap-2 mt-auto pt-4 border-t border-gray-50">
+
+                {/* Ticket ID & Priority */}
+                <div className="flex items-center gap-4">
+                    <span className="text-gray-400 font-medium">#{id}</span>
+                    <span className={`${getPriorityColor(priority)} font-bold tracking-wider text-[10px]`}>
+                        {priority?.toUpperCase()} PRIORITY
+                    </span>
                 </div>
 
-                <div className="text-sm text-base-content/60 font-medium mt-auto pt-4 flex items-center justify-between">
-                    <div className="flex items-center gap-1.5">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4 opacity-70">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                {/* Customer Name & Date */}
+                <div className="flex items-center gap-4 justify-between sm:justify-end w-full sm:w-auto">
+                    <span className="text-gray-600 truncate max-w-[120px] sm:max-w-none">{customer}</span>
+                    <div className="flex items-center gap-1.5 text-gray-400 whitespace-nowrap">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
                         </svg>
-                        <time dateTime={createdAt}>
-                            {new Date(createdAt).toLocaleDateString(undefined, {
-                                month: 'short', day: 'numeric', year: 'numeric'
-                            })}
-                        </time>
+                        <span>{formattedDate}</span>
                     </div>
-
-                    <button className="text-primary hover:text-primary-focus text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity -translate-x-2 group-hover:translate-x-0 transform duration-200">
-                        View Details →
-                    </button>
                 </div>
+
             </div>
         </div>
     );
