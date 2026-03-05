@@ -4,6 +4,7 @@ import Banner from '../components/Banner';
 import TaskStatus from '../components/TaskStatus';
 import TicketCard from '../components/TicketCard';
 import Footer from '../components/Footer';
+import { toast } from 'react-toastify';
 
 export default function Home() {
     const [tickets, setTickets] = useState([]);
@@ -28,22 +29,22 @@ export default function Home() {
     const handleTicketClick = (ticket) => {
         // Prevent adding if it's already completed
         if (resolvedTasks.some((t) => t.id === ticket.id)) {
-            alert(`Ticket "${ticket.title}" is already resolved!`);
+            toast.info(`Ticket "${ticket.title}" is already resolved!`);
             return;
         }
 
         // Basic logic to prevent duplicate additions to 'In Progress' state
         if (!selectedTasks.some((task) => task.id === ticket.id)) {
-            alert(`Added "${ticket.title}" to your Task Status panel!`);
+            toast.success(`Added "${ticket.title}" to your Task Status panel!`);
             setSelectedTasks((prevTasks) => [...prevTasks, ticket]);
         } else {
-            alert(`Ticket "${ticket.title}" is already in progress.`);
+            toast.warning(`Ticket "${ticket.title}" is already in progress.`);
         }
     };
 
     const handleCompleteTask = (taskToComplete) => {
         // Show alert (temporary)
-        alert(`Successfully marked "${taskToComplete.title}" as resolved!`);
+        toast.success(`Successfully marked "${taskToComplete.title}" as resolved!`);
 
         // Remove the ticket from Task Status
         setSelectedTasks((prevTasks) =>
