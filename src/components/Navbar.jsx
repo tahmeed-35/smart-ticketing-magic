@@ -36,7 +36,7 @@ export default function Navbar() {
             </div>
 
             <div className="flex-shrink-0">
-                <button className="bg-[#8B5CF6] hover:bg-[#7C3AED] text-white px-6 py-2.5 rounded-md font-medium text-sm transition-colors shadow-sm">
+                <button className="bg-gradient-to-r from-[#7B5AF2] to-[#9B64FA] hover:opacity-90 text-white px-6 py-2.5 rounded-md font-medium text-sm transition-opacity shadow-sm border-none">
                     + New Ticket
                 </button>
             </div>
