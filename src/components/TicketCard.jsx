@@ -3,14 +3,13 @@ import React from 'react';
 export default function TicketCard({ ticket, onClick }) {
     const { id, title, description, customer, priority, status, createdAt } = ticket;
 
-    // Visual styles for the status badge
     const getStatusStyle = (currentStatus) => {
         switch (currentStatus?.toLowerCase()) {
             case 'open':
                 return 'bg-green-100 text-green-700';
             case 'in progress':
             case 'in-progress':
-                return 'bg-yellow-100 text-[#B45309]'; // Darker yellow/orange for readability
+                return 'bg-yellow-100 text-[#B45309]';
             case 'resolved':
                 return 'bg-blue-100 text-blue-700';
             default:
@@ -18,7 +17,6 @@ export default function TicketCard({ ticket, onClick }) {
         }
     };
 
-    // Color dot for the status badge
     const getStatusDot = (currentStatus) => {
         switch (currentStatus?.toLowerCase()) {
             case 'open':
@@ -33,7 +31,7 @@ export default function TicketCard({ ticket, onClick }) {
         }
     };
 
-    // Text color coloring for the priority string
+    // Priority bibechona kore rong set kora hocche
     const getPriorityColor = (currentPriority) => {
         switch (currentPriority?.toLowerCase()) {
             case 'high':
@@ -47,7 +45,6 @@ export default function TicketCard({ ticket, onClick }) {
         }
     };
 
-    // Formatting date from ISO to MM/DD/YYYY format
     const formattedDate = new Date(createdAt).toLocaleDateString('en-US', {
         month: 'numeric',
         day: 'numeric',
@@ -59,7 +56,6 @@ export default function TicketCard({ ticket, onClick }) {
             onClick={() => onClick(ticket)}
             className="bg-white rounded-lg p-5 shadow-sm border border-gray-100 hover:shadow-md transition-shadow cursor-pointer w-full flex flex-col h-full group"
         >
-            {/* Header Line */}
             <div className="flex justify-between items-start mb-3 gap-3">
                 <h3 className="font-semibold text-gray-800 text-[15px] leading-snug group-hover:text-[#5542F6] transition-colors">{title}</h3>
                 <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-medium whitespace-nowrap ${getStatusStyle(status)}`}>
@@ -68,15 +64,11 @@ export default function TicketCard({ ticket, onClick }) {
                 </div>
             </div>
 
-            {/* Body Description */}
             <p className="text-gray-500 text-[13px] leading-relaxed mb-6 line-clamp-2 flex-grow">
                 {description}
             </p>
 
-            {/* Footer Meta Data */}
             <div className="flex flex-col sm:flex-row justify-between sm:items-center text-xs text-gray-500 gap-4 sm:gap-2 mt-auto pt-4 border-t border-gray-50">
-
-                {/* Ticket ID & Priority */}
                 <div className="flex items-center gap-4">
                     <span className="text-gray-400 font-medium">#{id}</span>
                     <span className={`${getPriorityColor(priority)} font-bold tracking-wider text-[10px]`}>
@@ -84,7 +76,6 @@ export default function TicketCard({ ticket, onClick }) {
                     </span>
                 </div>
 
-                {/* Customer Name & Date */}
                 <div className="flex items-center gap-4 justify-between sm:justify-end w-full sm:w-auto">
                     <span className="text-gray-600 truncate max-w-[120px] sm:max-w-none">{customer}</span>
                     <div className="flex items-center gap-1.5 text-gray-400 whitespace-nowrap">
@@ -94,7 +85,6 @@ export default function TicketCard({ ticket, onClick }) {
                         <span>{formattedDate}</span>
                     </div>
                 </div>
-
             </div>
         </div>
     );

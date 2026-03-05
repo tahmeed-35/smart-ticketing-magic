@@ -12,7 +12,7 @@ export default function Home() {
     const [resolvedTasks, setResolvedTasks] = useState([]);
 
     useEffect(() => {
-        // Fetch customer tickets from the public folder's api.json
+        // API theke shob ticket data fetch korchi
         fetch('/api.json')
             .then((res) => {
                 if (!res.ok) throw new Error("Failed to fetch tickets");
@@ -27,13 +27,11 @@ export default function Home() {
     }, []);
 
     const handleTicketClick = (ticket) => {
-        // Prevent adding if it's already completed
         if (resolvedTasks.some((t) => t.id === ticket.id)) {
             toast.info(`Ticket "${ticket.title}" is already resolved!`);
             return;
         }
 
-        // Basic logic to prevent duplicate additions to 'In Progress' state
         if (!selectedTasks.some((task) => task.id === ticket.id)) {
             toast.success(`Added "${ticket.title}" to your Task Status panel!`);
             setSelectedTasks((prevTasks) => [...prevTasks, ticket]);
@@ -43,20 +41,17 @@ export default function Home() {
     };
 
     const handleCompleteTask = (taskToComplete) => {
-        // Show alert (temporary)
         toast.success(`Successfully marked "${taskToComplete.title}" as resolved!`);
 
-        // Remove the ticket from Task Status
+        // Task complete hole list theke shoriye nichi
         setSelectedTasks((prevTasks) =>
             prevTasks.filter((task) => task.id !== taskToComplete.id)
         );
 
-        // Add it to Resolved List
         setResolvedTasks((prevResolvedTasks) =>
             [...prevResolvedTasks, taskToComplete]
         );
 
-        // Remove it from Customer Tickets list
         setTickets((prevTickets) =>
             prevTickets.filter((ticket) => ticket.id !== taskToComplete.id)
         );
@@ -64,23 +59,17 @@ export default function Home() {
 
     return (
         <div className="min-h-screen flex flex-col font-sans text-gray-900 bg-[#F4F5F7]">
-            {/* Seamless Sticky Navbar Layout */}
             <div className="w-full bg-white shadow-sm border-b border-gray-100 relative z-20">
                 <Navbar />
             </div>
 
             <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-
-                {/* Banner accurately reflects dynamic logic state automatically */}
                 <Banner
                     inProgressCount={selectedTasks.length}
                     resolvedCount={resolvedTasks.length}
                 />
 
-                {/* Responsive dual-column layout */}
                 <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-
-                    {/* Main List Section */}
                     <div className="lg:col-span-2 space-y-5">
                         <h2 className="text-[20px] font-bold text-[#3B4358] tracking-tight">Customer Tickets</h2>
 
@@ -101,7 +90,6 @@ export default function Home() {
                         </div>
                     </div>
 
-                    {/* Sticky Sidebar Status section */}
                     <div className="lg:col-span-1 sticky top-6">
                         <TaskStatus
                             tasks={selectedTasks}
@@ -109,7 +97,6 @@ export default function Home() {
                             onComplete={handleCompleteTask}
                         />
                     </div>
-
                 </div>
             </main>
 

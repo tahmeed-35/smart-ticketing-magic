@@ -3,7 +3,6 @@ import React from 'react';
 export default function TaskStatus({ tasks = [], resolvedTasks = [], onComplete }) {
     return (
         <div className="w-full">
-            {/* Active Tasks Section */}
             <div className="mb-8">
                 <h2 className="text-[18px] font-bold text-[#3B4358] mb-1">Task Status</h2>
                 <p className="text-[#8492A6] text-[13px] mb-4">Select a ticket to add to Task Status</p>
@@ -18,6 +17,7 @@ export default function TaskStatus({ tasks = [], resolvedTasks = [], onComplete 
                                 className="w-full bg-[#0CAF60] hover:bg-[#0A9652] text-white py-2 rounded-md font-medium text-[13px] transition-colors shadow-sm"
                                 onClick={(e) => {
                                     e.stopPropagation();
+                                    // Task ta complete korte ekhane click korle onComplete call hobe
                                     onComplete(task);
                                 }}
                             >
@@ -28,7 +28,6 @@ export default function TaskStatus({ tasks = [], resolvedTasks = [], onComplete 
                 </div>
             </div>
 
-            {/* Resolved Tasks Section */}
             <div>
                 <h2 className="text-[18px] font-bold text-[#3B4358] mb-3">Resolved Task</h2>
                 {resolvedTasks.length > 0 ? (
