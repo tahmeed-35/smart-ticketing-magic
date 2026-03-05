@@ -1,14 +1,16 @@
-import { useState } from 'react'
-import './App.css'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import './App.css'; // Let's keep this if the user wants it later
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <h3 className='text-3xl font-bold underline'>Tahyee Rules Here</h3>
-    </>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        {/* We can add more routes here, e.g. <Route path="/ticket/:id" element={<TicketDetails />} /> */}
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
